@@ -116,6 +116,3 @@ Este projeto é de uso **educacional** e está disponível publicamente.
 © 2025 Bruno Malosti — Todos os direitos reservados.
 
 ```
-
-Quer que eu adicione os **badges coloridos** (ex: _“Made with Kotlin”_, _“Jetpack Compose”_, _“Android Studio”_)? Eles deixam o README mais visual e profissional.
-```
