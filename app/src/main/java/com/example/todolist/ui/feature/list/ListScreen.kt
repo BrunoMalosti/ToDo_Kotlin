@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,6 +26,8 @@ import com.example.todolist.domain.Todo
 import com.example.todolist.domain.todo1
 import com.example.todolist.domain.todo2
 import com.example.todolist.domain.todo3
+import com.example.todolist.navigation.AddEditRoute
+import com.example.todolist.ui.UiEvent
 import com.example.todolist.ui.components.TodoItem
 import com.example.todolist.ui.feature.addedit.AddEditViewModel
 import com.example.todolist.ui.theme.ToDoListTheme
@@ -46,6 +49,25 @@ fun ListScreen(
 
     val todos by viewModel.todos.collectAsState()
 
+    LaunchedEffect(Unit){
+        viewModel.uiEvent.collect { uiEvent ->
+            when (uiEvent){
+                is UiEvent.Navigate<*> -> {
+                    when (uiEvent.route){
+                        is AddEditRoute -> {
+                            navigateToAddEditScreen(uiEvent.route.id)
+                        }
+                    }
+                }
+                UiEvent.NavigateBack -> {
+
+                }
+                is UiEvent.ShowSnackbar -> {
+
+                }
+            }
+        }
+    }
 
 
     ListContent(

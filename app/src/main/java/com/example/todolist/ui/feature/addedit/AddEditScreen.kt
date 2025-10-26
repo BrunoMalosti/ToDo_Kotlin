@@ -29,6 +29,7 @@ import com.example.todolist.ui.theme.ToDoListTheme
 
 @Composable
 fun AddEditScreen(
+    id: Long?,
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current.applicationContext
@@ -37,6 +38,7 @@ fun AddEditScreen(
 
     val viewModel = viewModel<AddEditViewModel>{
         AddEditViewModel(
+            id = id,
             repository = repository
         )
     }
