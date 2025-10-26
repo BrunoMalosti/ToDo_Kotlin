@@ -11,9 +11,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,11 +44,19 @@ fun AddEditScreen(
     val title = viewModel.title
     val description = viewModel.description
 
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+
+
+
     LaunchedEffect(Unit){
         viewModel.uiEvent.collect{uiEvent->
             when(uiEvent) {
                 is UiEvent.ShowSnackbar -> {
-
+                    snackbarHostState.showSnackbar(
+                        message = uiEvent.message,
+                    )
                 }
                 UiEvent.NavigateBack -> {
                     navigateBack()
@@ -60,6 +71,7 @@ fun AddEditScreen(
     AddEditContent(
         title = title,
         description = description,
+        snackbarHostState= snackbarHostState,
         onEvent = viewModel::onEvent
     )
 }
@@ -68,6 +80,7 @@ fun AddEditScreen(
 fun AddEditContent(
     title: String,
     description: String?,
+    snackbarHostState: SnackbarHostState,
     onEvent: (AddEditEvent)-> Unit
 
 ) {
@@ -80,6 +93,9 @@ fun AddEditContent(
             ) {
                 Icon(Icons.Default.Check, contentDescription = "Save")
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
     ){
         Column(
@@ -124,6 +140,7 @@ private fun AddEditContentPreview() {
         AddEditContent(
             title = "",
             description = null,
+            snackbarHostState = SnackbarHostState(),
             onEvent = {}
         )
     }
